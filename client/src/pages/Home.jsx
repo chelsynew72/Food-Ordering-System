@@ -29,7 +29,7 @@ const Home = () => {
       {/* Hero */}
       <section className="hero">
         <div className="container">
-          <h1 className="hero-title">Delicious food,<br />delivered fast 🚀</h1>
+          <h1 className="hero-title">Delicious food,<br />delivered fast </h1>
           <p className="hero-sub">Order from the best restaurants near you — fresh, fast, affordable.</p>
           <div style={{ display: 'flex', gap: 12 }}>
             <Link

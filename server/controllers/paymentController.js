@@ -41,8 +41,8 @@ export const initiatePayment = async (req, res) => {
       email: order.customer.email,
       phone: order.customer.phone || '0771234567',
       address: order.deliveryAddress,
-      city: 'Colombo',
-      country: 'Sri Lanka',
+      city: 'Yaounde',
+      country: 'Cameroon',
     };
 
     res.json({ payhereParams });

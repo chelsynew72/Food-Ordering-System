@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
   }
 };
 
-export const getMyOrders = async (req, res) => {
+export const getMyOrders = async (req, res ,next) => {
   try {
     const orders = await Order.find({ customer: req.user._id })
       .populate('items.food', 'name image')
