@@ -17,9 +17,9 @@ const Menu = () => {
   const [ordering, setOrdering] = useState(false);
 
   const { items, addItem, removeItem, clearCart, total, itemCount } = useCart();
-  const { user }    = useAuth();
-  const navigate    = useNavigate();
-  const [params]    = useSearchParams();
+  const { user }  = useAuth();
+  const navigate  = useNavigate();
+  const [params]  = useSearchParams();
 
   useEffect(() => { const c = params.get('category'); if (c) setCategory(c); }, [params]);
   useEffect(() => { if (user?.address) setAddress(user.address); }, [user]);
@@ -33,31 +33,26 @@ const Menu = () => {
       .finally(() => setLoading(false));
   }, [category]);
 
-  const getQty  = (id) => items.find((i) => i._id === id)?.quantity ?? 0;
+  const getQty = (id) => items.find((i) => i._id === id)?.quantity ?? 0;
 
   const placeOrder = async () => {
-    if (!address.trim())    { toast.error('Enter a delivery address'); return; }
-    if (!items.length)      { toast.error('Your cart is empty');       return; }
+    if (!address.trim()) { toast.error('Enter a delivery address'); return; }
+    if (!items.length)   { toast.error('Your cart is empty');       return; }
     setOrdering(true);
     try {
+      // 1. Create the order
       const { data: orderData } = await axios.post('/api/orders', {
         items: items.map(({ _id, quantity }) => ({ foodId: _id, quantity })),
         deliveryAddress: address,
       });
-      const { data: payData } = await axios.post('/api/payment/initiate', { orderId: orderData.order._id });
-      clearCart();
+      const orderId = orderData.order._id;
 
-      // Submit PayHere form
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'https://sandbox.payhere.lk/pay/checkout';
-      Object.entries(payData.payhereParams).forEach(([key, val]) => {
-        const input = document.createElement('input');
-        input.type = 'hidden'; input.name = key; input.value = String(val);
-        form.appendChild(input);
-      });
-      document.body.appendChild(form);
-      form.submit();
+      // 2. Simulate payment — mark as paid directly
+      await axios.post('/api/payment/simulate', { orderId });
+
+      clearCart();
+      toast.success('Order placed successfully! 🎉');
+      navigate(`/order-confirmation/${orderId}`);
     } catch (err) {
       toast.error(err.response?.data?.message ?? 'Order failed');
       setOrdering(false);
@@ -71,7 +66,6 @@ const Menu = () => {
         <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4 }}>Menu</h1>
         <p style={{ color: 'var(--gray)', marginBottom: 24, fontSize: 14 }}>Fresh food, ready to order</p>
 
-        {/* Category pills */}
         <div className="category-pills" style={{ marginBottom: 28 }}>
           {CATEGORIES.map((cat) => (
             <button key={cat} className={`category-pill${category === cat ? ' active' : ''}`} onClick={() => setCategory(cat)}>
@@ -81,7 +75,6 @@ const Menu = () => {
         </div>
 
         <div className="menu-layout">
-          {/* Food grid */}
           <div>
             {loading ? (
               <div className="spinner" />
@@ -121,7 +114,6 @@ const Menu = () => {
             )}
           </div>
 
-          {/* Cart sidebar */}
           <div className="cart-sidebar">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
               <ShoppingBag size={20} color="var(--blue)" />
@@ -162,6 +154,12 @@ const Menu = () => {
                 <div style={{ marginTop: 16 }}>
                   <label className="form-label">Delivery address</label>
                   <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter your delivery address" style={{ marginBottom: 12 }} />
+
+                  {/* Sandbox notice */}
+                  <div style={{ background: '#FFF3CD', borderRadius: 8, padding: '10px 12px', marginBottom: 12, fontSize: 12, color: '#856404' }}>
+                    💳 <strong>Sandbox mode</strong> — payment is simulated
+                  </div>
+
                   <button className="btn btn-primary" style={{ width: '100%' }} onClick={placeOrder} disabled={ordering}>
                     {ordering ? 'Processing…' : `Pay LKR ${total.toLocaleString()}`}
                   </button>

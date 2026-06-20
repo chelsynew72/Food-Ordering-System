@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { initiatePayment, payhereNotify, getPaymentSummary } from '../controllers/paymentController.js';
+import { initiatePayment, payhereNotify, getPaymentSummary, simulatePayment } from '../controllers/paymentController.js';
 import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = Router();
