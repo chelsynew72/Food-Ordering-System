@@ -53,7 +53,7 @@ const Menu = () => {
       form.action = 'https://sandbox.payhere.lk/pay/checkout';
       Object.entries(payData.payhereParams).forEach(([key, val]) => {
         const input = document.createElement('input');
-        input.type = 'hidden'; input.name = key; input.value = val;
+        input.type = 'hidden'; input.name = key; input.value = String(val);
         form.appendChild(input);
       });
       document.body.appendChild(form);

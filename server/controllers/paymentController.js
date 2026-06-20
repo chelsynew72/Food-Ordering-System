@@ -3,7 +3,9 @@ import Order from '../models/Order.js';
 
 const generateHash = (merchantId, orderId, amount, currency, secret) => {
   const secretHash = md5(secret).toUpperCase();
-  return md5(`${merchantId}${orderId}${amount}${currency}${secretHash}`).toUpperCase();
+  const hashStr = `${merchantId}${orderId}${amount}${currency}${secretHash}`;
+  console.log('Hash input:', hashStr);
+  return md5(hashStr).toUpperCase();
 };
 
 export const initiatePayment = async (req, res) => {
@@ -19,34 +21,43 @@ export const initiatePayment = async (req, res) => {
     }
 
     const merchantId = process.env.PAYHERE_MERCHANT_ID;
-    const amount = order.totalAmount.toFixed(2);
-    const currency = 'LKR';
-    const hash = generateHash(merchantId, orderId, amount, currency, process.env.PAYHERE_SECRET);
+    const secret     = process.env.PAYHERE_SECRET;
 
-    const [firstName, ...rest] = order.customer.name.split(' ');
+    // Amount must be X.XX format — no comma separators
+    const amount   = parseFloat(order.totalAmount).toFixed(2);
+    const currency = 'LKR';
+    const hash     = generateHash(merchantId, orderId, amount, currency, secret);
+
+    console.log('Merchant ID:', merchantId);
+    console.log('Order ID:', orderId);
+    console.log('Amount:', amount);
+    console.log('Hash:', hash);
+
+    const [firstName, ...rest] = (order.customer.name || 'Customer').split(' ');
 
     const payhereParams = {
-      sandbox: true,
+      sandbox:     true,
       merchant_id: merchantId,
-      return_url: `${process.env.CLIENT_URL}/order-confirmation/${orderId}`,
-      cancel_url: `${process.env.CLIENT_URL}/checkout`,
-      notify_url: process.env.PAYHERE_NOTIFY_URL,
-      order_id: orderId,
-      items: order.items.map((i) => i.name).join(', '),
+      return_url:  `${process.env.CLIENT_URL}/order-confirmation/${orderId}`,
+      cancel_url:  `${process.env.CLIENT_URL}/menu`,
+      notify_url:  process.env.PAYHERE_NOTIFY_URL,
+      order_id:    orderId,
+      items:       order.items.map((i) => i.name).join(', '),
       amount,
       currency,
       hash,
-      first_name: firstName,
-      last_name: rest.join(' ') || 'N/A',
-      email: order.customer.email,
-      phone: order.customer.phone || '0771234567',
-      address: order.deliveryAddress,
-      city: 'Yaounde',
-      country: 'Cameroon',
+      first_name:  firstName,
+      last_name:   rest.join(' ') || 'N/A',
+      email:       order.customer.email,
+      phone:       order.customer.phone || '0771234567',
+      address:     order.deliveryAddress,
+      city:        'Colombo',
+      country:     'Sri Lanka',
     };
 
     res.json({ payhereParams });
   } catch (err) {
+    console.error('Payment error:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
@@ -56,7 +67,7 @@ export const payhereNotify = async (req, res) => {
     const { merchant_id, order_id, payment_id, payhere_amount, payhere_currency, status_code, md5sig } = req.body;
 
     const secretHash = md5(process.env.PAYHERE_SECRET).toUpperCase();
-    const expected = md5(`${merchant_id}${order_id}${payhere_amount}${payhere_currency}${status_code}${secretHash}`).toUpperCase();
+    const expected   = md5(`${merchant_id}${order_id}${payhere_amount}${payhere_currency}${status_code}${secretHash}`).toUpperCase();
 
     if (md5sig !== expected) return res.status(400).send('Invalid signature');
 
@@ -64,8 +75,8 @@ export const payhereNotify = async (req, res) => {
     if (!order) return res.status(404).send('Order not found');
 
     if (status_code === '2') {
-      order.paymentStatus = 'paid';
-      order.status = 'confirmed';
+      order.paymentStatus   = 'paid';
+      order.status          = 'confirmed';
       order.payherePaymentId = payment_id;
     } else if (['-1', '-2', '-3'].includes(status_code)) {
       order.paymentStatus = 'failed';
