@@ -19,10 +19,10 @@ const AdminPayments = () => {
 
   const CARDS = summary
     ? [
-        { label: 'Paid Orders',     value: summary.paid,                              icon: '✅', bg: '#D4EDDA', color: '#155724' },
-        { label: 'Unpaid Orders',   value: summary.unpaid,                            icon: '⏳', bg: '#FFF3CD', color: '#856404' },
-        { label: 'Failed Payments', value: summary.failed,                            icon: '❌', bg: '#F8D7DA', color: '#721C24' },
-        { label: 'Total Revenue',   value: `LKR ${summary.totalRevenue.toLocaleString()}`, icon: '💰', bg: '#E8F5E9', color: '#155724' },
+        { label: 'Paid Orders',     value: summary.paid,                              icon: '', bg: '#D4EDDA', color: '#155724' },
+        { label: 'Unpaid Orders',   value: summary.unpaid,                            icon: '', bg: '#FFF3CD', color: '#856404' },
+        { label: 'Failed Payments', value: summary.failed,                            icon: '', bg: '#F8D7DA', color: '#721C24' },
+        { label: 'Total Revenue',   value: `LKR ${summary.totalRevenue.toLocaleString()}`, icon: '', bg: '#E8F5E9', color: '#155724' },
       ]
     : [];
 

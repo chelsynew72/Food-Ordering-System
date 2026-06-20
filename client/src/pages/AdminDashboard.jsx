@@ -16,10 +16,10 @@ const AdminDashboard = () => {
 
   const STAT_CARDS = stats
     ? [
-        { label: 'Total Orders',    value: stats.totalOrders,                        icon: '📦', bg: '#E3F2FD' },
-        { label: 'Total Revenue',   value: `LKR ${stats.totalRevenue.toLocaleString()}`, icon: '💰', bg: '#E8F5E9' },
-        { label: 'Customers',       value: stats.totalCustomers,                     icon: '👥', bg: '#FFF3E0' },
-        { label: 'Pending Orders',  value: stats.pendingOrders,                      icon: '⏳', bg: '#FCE4EC' },
+        { label: 'Total Orders',    value: stats.totalOrders,                        icon: '', bg: '#E3F2FD' },
+        { label: 'Total Revenue',   value: `LKR ${stats.totalRevenue.toLocaleString()}`, icon: '', bg: '#E8F5E9' },
+        { label: 'Customers',       value: stats.totalCustomers,                     icon: '', bg: '#FFF3E0' },
+        { label: 'Pending Orders',  value: stats.pendingOrders,                      icon: '', bg: '#FCE4EC' },
       ]
     : [];
 

@@ -25,7 +25,7 @@ const MyOrders = () => {
           <div className="spinner" />
         ) : orders.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-state-icon">📦</div>
+            <div className="empty-state-icon"></div>
             <div className="empty-state-title">No orders yet</div>
             <p style={{ marginBottom: 20 }}>Start by browsing our menu!</p>
             <Link to="/menu" className="btn btn-primary">Browse menu</Link>

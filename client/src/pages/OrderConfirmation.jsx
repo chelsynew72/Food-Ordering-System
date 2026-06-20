@@ -24,7 +24,7 @@ const OrderConfirmation = () => {
             <div className="spinner" />
           ) : order ? (
             <>
-              <div className="order-confirm-icon">{order.paymentStatus === 'paid' ? '✅' : '⏳'}</div>
+              <div className="order-confirm-icon">{order.paymentStatus === 'paid' ? '' : ''}</div>
               <h1 className="order-confirm-title">
                 {order.paymentStatus === 'paid' ? 'Order confirmed!' : 'Order received!'}
               </h1>
