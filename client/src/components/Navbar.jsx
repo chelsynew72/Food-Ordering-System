@@ -20,10 +20,16 @@ const Navbar = () => {
             <>
               {!isAdmin && (
                 <Link to="/menu" className="btn btn-ghost btn-sm" style={{ position: 'relative' }}>
-                  <ShoppingCart size={16} />
-                  Order
+                  <ShoppingCart size={15} />
+                  <span>Order</span>
                   {itemCount > 0 && (
-                    <span style={{ background: 'var(--blue)', color: 'white', borderRadius: '50%', width: 18, height: 18, fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{
+                      background: 'var(--blue)', color: 'white',
+                      borderRadius: '50%', width: 17, height: 17,
+                      fontSize: 10, fontWeight: 700,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0,
+                    }}>
                       {itemCount}
                     </span>
                   )}
@@ -31,16 +37,19 @@ const Navbar = () => {
               )}
               {!isAdmin && (
                 <Link to="/my-orders" className="btn btn-ghost btn-sm">
-                  <User size={16} /> My Orders
+                  <User size={15} />
+                  <span>My Orders</span>
                 </Link>
               )}
               {isAdmin && (
                 <Link to="/admin" className="btn btn-ghost btn-sm">
-                  <LayoutDashboard size={16} /> Dashboard
+                  <LayoutDashboard size={15} />
+                  <span>Dashboard</span>
                 </Link>
               )}
               <button onClick={handleLogout} className="btn btn-outline btn-sm">
-                <LogOut size={15} /> Logout
+                <LogOut size={14} />
+                <span>Logout</span>
               </button>
             </>
           ) : (

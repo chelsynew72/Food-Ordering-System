@@ -43,39 +43,55 @@ const AdminOrders = () => {
       {loading ? (
         <div className="spinner" />
       ) : (
-        <div className="card" style={{ overflowX: 'auto' }}>
-          <table className="data-table">
-            <thead>
-              <tr>
-                {['Order ID', 'Customer', 'Items', 'Total', 'Payment', 'Status', 'Date', 'Update'].map((h) => <th key={h}>{h}</th>)}
-              </tr>
-            </thead>
-            <tbody>
-              {orders.length === 0 ? (
-                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 32, color: 'var(--gray)' }}>No orders found</td></tr>
-              ) : orders.map((o) => (
-                <tr key={o._id}>
-                  <td style={{ fontWeight: 600 }}>#{o._id.slice(-8).toUpperCase()}</td>
-                  <td>
-                    <div style={{ fontWeight: 600, fontSize: 13 }}>{o.customer?.name}</div>
-                    <div style={{ color: 'var(--gray)', fontSize: 12 }}>{o.customer?.email}</div>
-                  </td>
-                  <td style={{ fontSize: 12, color: 'var(--gray)', maxWidth: 160 }}>
-                    {o.items.map((i) => `${i.name} ×${i.quantity}`).join(', ')}
-                  </td>
-                  <td style={{ fontWeight: 600 }}>LKR {o.totalAmount.toLocaleString()}</td>
-                  <td><span className={`badge badge-${o.paymentStatus}`}>{o.paymentStatus}</span></td>
-                  <td><span className={`badge badge-${o.status}`}>{o.status.replace('_', ' ')}</span></td>
-                  <td style={{ fontSize: 12, color: 'var(--gray)' }}>{new Date(o.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    <select value={o.status} onChange={(e) => updateStatus(o._id, e.target.value)} style={{ fontSize: 12, padding: '6px 10px', minWidth: 140 }}>
-                      {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s.replace('_', ' ')}</option>)}
-                    </select>
-                  </td>
+        <div className="card">
+          <div className="table-wrapper">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  {['Order ID', 'Customer', 'Items', 'Total', 'Payment', 'Status', 'Date', 'Update'].map((h) => (
+                    <th key={h}>{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {orders.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} style={{ textAlign: 'center', padding: 32, color: 'var(--gray)' }}>
+                      No orders found
+                    </td>
+                  </tr>
+                ) : orders.map((o) => (
+                  <tr key={o._id}>
+                    <td style={{ fontWeight: 600 }}>#{o._id.slice(-8).toUpperCase()}</td>
+                    <td>
+                      <div style={{ fontWeight: 600, fontSize: 13 }}>{o.customer?.name}</div>
+                      <div style={{ color: 'var(--gray)', fontSize: 12 }}>{o.customer?.email}</div>
+                    </td>
+                    <td style={{ fontSize: 12, color: 'var(--gray)', maxWidth: 160 }}>
+                      {o.items.map((i) => `${i.name} ×${i.quantity}`).join(', ')}
+                    </td>
+                    <td style={{ fontWeight: 600 }}>LKR {o.totalAmount.toLocaleString()}</td>
+                    <td><span className={`badge badge-${o.paymentStatus}`}>{o.paymentStatus}</span></td>
+                    <td><span className={`badge badge-${o.status}`}>{o.status.replace('_', ' ')}</span></td>
+                    <td style={{ fontSize: 12, color: 'var(--gray)' }}>
+                      {new Date(o.createdAt).toLocaleDateString()}
+                    </td>
+                    <td>
+                      <select
+                        value={o.status}
+                        onChange={(e) => updateStatus(o._id, e.target.value)}
+                        style={{ fontSize: 12, padding: '6px 10px', minWidth: 130 }}
+                      >
+                        {STATUS_OPTIONS.map((s) => (
+                          <option key={s} value={s}>{s.replace('_', ' ')}</option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </AdminLayout>
