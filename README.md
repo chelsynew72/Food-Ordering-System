@@ -51,6 +51,11 @@ npm start                # starts on http://localhost:3000
    ```
 4. Test card: `4916 2172 3454 1676` · any future expiry · any CVV
 
+## Note on PayHere
+PayHere sandbox works on localhost for testing.
+For production deployment, a custom domain is required
+to whitelist on PayHere merchant settings.
+
 ---
 
 ## 👤 Demo accounts (after `node seed.js`)

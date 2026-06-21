@@ -13,6 +13,7 @@ import AdminDashboard   from './pages/AdminDashboard';
 import AdminOrders      from './pages/AdminOrders';
 import AdminCustomers   from './pages/AdminCustomers';
 import AdminFoods       from './pages/AdminFoods';
+import WakeUpBanner from './components/WakeUpBanner';
 import AdminPayments    from './pages/AdminPayments';
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -52,6 +53,7 @@ const App = () => (
   <BrowserRouter>
     <AuthProvider>
       <CartProvider>
+        <WakeUpBanner />
         <Toaster
           position="top-center"
           toastOptions={{ style: { borderRadius: 12, fontFamily: 'Inter, sans-serif', fontWeight: 500 } }}

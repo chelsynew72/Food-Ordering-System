@@ -103,20 +103,20 @@ export const getPaymentSummary = async (req, res) => {
   }
 };
 
-export const simulatePayment = async (req, res) => {
-  try {
-    const { orderId } = req.body;
-    const order = await Order.findById(orderId);
-    if (!order) return res.status(404).json({ message: 'Order not found' });
-    if (order.customer.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: 'Access denied' });
-    }
-    order.paymentStatus    = 'paid';
-    order.status           = 'confirmed';
-    order.payherePaymentId = `SIM-${Date.now()}`;
-    await order.save();
-    res.json({ message: 'Payment simulated successfully', order });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-};
+// export const simulatePayment = async (req, res) => {
+//   try {
+//     const { orderId } = req.body;
+//     const order = await Order.findById(orderId);
+//     if (!order) return res.status(404).json({ message: 'Order not found' });
+//     if (order.customer.toString() !== req.user._id.toString()) {
+//       return res.status(403).json({ message: 'Access denied' });
+//     }
+//     order.paymentStatus    = 'paid';
+//     order.status           = 'confirmed';
+//     order.payherePaymentId = `SIM-${Date.now()}`;
+//     await order.save();
+//     res.json({ message: 'Payment simulated successfully', order });
+//   } catch (err) {
+//     res.status(500).json({ message: 'Server error', error: err.message });
+//   }
+// };
