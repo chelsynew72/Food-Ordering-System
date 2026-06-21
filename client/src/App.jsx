@@ -54,6 +54,7 @@ const App = () => (
     <AuthProvider>
       <CartProvider>
         <WakeUpBanner />
+        <WakeUpBanner />
         <Toaster
           position="top-center"
           toastOptions={{ style: { borderRadius: 12, fontFamily: 'Inter, sans-serif', fontWeight: 500 } }}

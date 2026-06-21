@@ -1,24 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Plus, Minus, ShoppingBag } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import FoodModal from '../components/FoodModal';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
 const CATEGORIES = ['All', 'Pizza', 'Burger', 'Cake', 'Sushi', 'Salad', 'Drinks', 'Dessert', 'Other'];
 
 const Menu = () => {
-  const [foods,    setFoods]    = useState([]);
-  const [loading,  setLoading]  = useState(true);
-  const [category, setCategory] = useState('All');
-  const [address,  setAddress]  = useState('');
-  const [ordering, setOrdering] = useState(false);
+  const [foods,      setFoods]      = useState([]);
+  const [loading,    setLoading]    = useState(true);
+  const [category,   setCategory]   = useState('All');
+  const [address,    setAddress]    = useState('');
+  const [ordering,   setOrdering]   = useState(false);
+  const [selected,   setSelected]   = useState(null); // food for modal
 
   const { items, addItem, removeItem, clearCart, total, itemCount } = useCart();
   const { user }  = useAuth();
-  const navigate  = useNavigate();
   const [params]  = useSearchParams();
 
   useEffect(() => { const c = params.get('category'); if (c) setCategory(c); }, [params]);
@@ -50,7 +51,6 @@ const Menu = () => {
 
       clearCart();
 
-      // Submit to PayHere
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://sandbox.payhere.lk/pay/checkout';
@@ -72,6 +72,10 @@ const Menu = () => {
   return (
     <div className="page">
       <Navbar />
+
+      {/* Food detail modal */}
+      {selected && <FoodModal food={selected} onClose={() => setSelected(null)} />}
+
       <div className="container" style={{ paddingTop: 32, paddingBottom: 48 }}>
         <h1 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4 }}>Menu</h1>
         <p style={{ color: 'var(--gray)', marginBottom: 24, fontSize: 14 }}>Fresh food, ready to order</p>
@@ -98,18 +102,36 @@ const Menu = () => {
                 {foods.map((food) => {
                   const qty = getQty(food._id);
                   return (
-                    <div key={food._id} className="food-card">
-                      <img src={food.image || 'https://via.placeholder.com/400x160?text=Food'} alt={food.name} className="food-card-img" />
+                    <div
+                      key={food._id}
+                      className="food-card"
+                      onClick={() => setSelected(food)}
+                    >
+                      <img
+                        src={food.image || 'https://via.placeholder.com/400x160?text=Food'}
+                        alt={food.name}
+                        className="food-card-img"
+                      />
                       <div className="food-card-body">
                         <div className="food-card-name">{food.name}</div>
                         <div className="food-card-desc">{food.description}</div>
-                        <div style={{ fontSize: 12, color: 'var(--gray)', marginBottom: 10 }}>🕐 {food.preparationTime} min</div>
+                        <div style={{ fontSize: 12, color: 'var(--gray)', marginBottom: 10 }}>
+                          🕐 {food.preparationTime} min
+                        </div>
                         <div className="food-card-footer">
                           <span className="food-card-price">LKR {food.price.toLocaleString()}</span>
                           {qty === 0 ? (
-                            <button className="food-card-add" onClick={() => { addItem(food); toast.success('Added to cart'); }}>+</button>
+                            <button
+                              className="food-card-add"
+                              onClick={(e) => { e.stopPropagation(); addItem(food); toast.success('Added to cart'); }}
+                            >
+                              +
+                            </button>
                           ) : (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                            <div
+                              style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
                               <button className="cart-qty-btn" onClick={() => removeItem(food._id)}><Minus size={12} /></button>
                               <span style={{ fontWeight: 700, fontSize: 15, minWidth: 16, textAlign: 'center' }}>{qty}</span>
                               <button className="cart-qty-btn" onClick={() => addItem(food)} style={{ borderColor: 'var(--blue)', color: 'var(--blue)' }}><Plus size={12} /></button>
@@ -124,6 +146,7 @@ const Menu = () => {
             )}
           </div>
 
+          {/* Cart sidebar */}
           <div className="cart-sidebar">
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
               <ShoppingBag size={20} color="var(--blue)" />
@@ -163,8 +186,18 @@ const Menu = () => {
 
                 <div style={{ marginTop: 16 }}>
                   <label className="form-label">Delivery address</label>
-                  <input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Enter your delivery address" style={{ marginBottom: 12 }} />
-                  <button className="btn btn-primary" style={{ width: '100%' }} onClick={placeOrder} disabled={ordering}>
+                  <input
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    placeholder="Enter your delivery address"
+                    style={{ marginBottom: 12 }}
+                  />
+                  <button
+                    className="btn btn-primary"
+                    style={{ width: '100%' }}
+                    onClick={placeOrder}
+                    disabled={ordering}
+                  >
                     {ordering ? 'Processing…' : `Pay LKR ${total.toLocaleString()}`}
                   </button>
                 </div>
