@@ -30,7 +30,7 @@ const WakeUpBanner = () => {
         display: 'inline-block',
         animation: 'pulse 1s infinite',
       }} />
-      ⏳ Server is waking up, please wait...
+       Server is waking up, please wait...
       <style>{`
         @keyframes pulse {
           0%, 100% { opacity: 1; }

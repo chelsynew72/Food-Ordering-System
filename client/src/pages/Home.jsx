@@ -171,7 +171,7 @@ const Home = () => {
             <div>
               <div style={{ fontSize: 13, fontWeight: 700, color: '#009DE0', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 10 }}>Limited time</div>
               <h3 style={{ fontSize: 28, fontWeight: 800, color: 'white', marginBottom: 10, letterSpacing: '-0.5px' }}>
-                Free delivery on<br />your first order 🎉
+                Free delivery on<br />your first order 
               </h3>
               <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.5 }}>
                 Sign up today and enjoy free delivery — no minimum order required.
@@ -276,9 +276,7 @@ const Home = () => {
           <div style={{ fontSize: 18, fontWeight: 800, color: '#009DE0' }}>
             Bolt<span style={{ color: '#1A1A2E' }}>Eats</span>
           </div>
-          <div style={{ fontSize: 13, color: '#ABABAB' }}>
-            © {new Date().getFullYear()} BoltEats. Built with ❤️ for fast food lovers.
-          </div>
+          
         </div>
       </footer>
     </div>

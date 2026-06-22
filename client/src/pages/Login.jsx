@@ -54,9 +54,9 @@ const Login = () => {
         </p>
 
         <div style={{ marginTop: 20, padding: '14px 16px', background: '#F8F9FA', borderRadius: 10, fontSize: 13, color: 'var(--gray)' }}>
-          <strong style={{ color: 'var(--dark)' }}>Demo accounts</strong><br />
-          Admin: admin@foodapp.com / admin123<br />
-          Customer: customer@foodapp.com / customer123
+          <strong style={{ color: 'var(--dark)' }}>Admin credentials</strong><br />
+          admin@foodapp.com / admin123<br />
+          
         </div>
       </div>
     </div>
