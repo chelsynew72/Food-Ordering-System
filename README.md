@@ -1,20 +1,19 @@
-# 🍔 BoltEats — Food Ordering System
+#  BoltEats — Food Ordering System
 
 Full-stack food ordering app built with **React.js**, **Node.js (ES6 modules)**, **Express**, and **MongoDB**.  
-UI design inspired by [Wolt](https://wolt.com).
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1 — Backend
 
 ```bash
 cd server
 npm install
-cp .env.example .env     # fill in your values
-node seed.js             # seeds demo data + accounts
-npm run dev              # starts on http://localhost:5000
+cp .env.example .env     
+node seed.js             
+npm run dev              
 ```
 
 ### 2 — Frontend
@@ -22,7 +21,7 @@ npm run dev              # starts on http://localhost:5000
 ```bash
 cd client
 npm install
-npm start                # starts on http://localhost:3000
+npm start                
 ```
 
 ---
@@ -40,7 +39,7 @@ npm start                # starts on http://localhost:3000
 
 ---
 
-## 💳 PayHere Sandbox
+## PayHere Sandbox
 
 1. Register at **https://sandbox.payhere.lk**
 2. Copy Merchant ID + Secret → `.env`
@@ -58,7 +57,7 @@ to whitelist on PayHere merchant settings.
 
 ---
 
-## 👤 Demo accounts (after `node seed.js`)
+## Demo accounts (after `node seed.js`)
 
 | Role     | Email                    | Password     |
 |----------|--------------------------|--------------|
@@ -81,7 +80,7 @@ to whitelist on PayHere merchant settings.
 
 ---
 
-## 📡 API reference
+##  API reference
 
 | Method | Endpoint                    | Auth     | Description           |
 |--------|-----------------------------|----------|-----------------------|
